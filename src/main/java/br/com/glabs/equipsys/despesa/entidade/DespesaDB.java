@@ -37,9 +37,11 @@ public class DespesaDB {
     @Column
     private BigDecimal valor;
 
+    @Enumerated(EnumType.STRING)
     @Column
     private TipoDespesaEnum tipo;
 
+    @Enumerated(EnumType.STRING)
     @Column
     private SituacaoPagamentoEnum situacao;
 
