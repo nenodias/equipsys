@@ -1,15 +1,23 @@
 package br.com.glabs.equipsys.despesa.entidade;
 
+import br.com.glabs.equipsys.conta.entidade.ContaDB;
 import br.com.glabs.equipsys.despesa.entidade.enums.SituacaoPagamentoEnum;
 import br.com.glabs.equipsys.despesa.entidade.enums.TipoDespesaEnum;
 import br.com.glabs.equipsys.fornecedor.entidade.FornecedorDB;
 import br.com.glabs.equipsys.obra.entidade.ObraDB;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
+@Getter
+@Setter
+@EqualsAndHashCode
 @Table
+@Entity
 public class DespesaDB {
 
     @Id
@@ -55,6 +63,10 @@ public class DespesaDB {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private ObraDB obra;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private ContaDB conta;
 
     @Column
     private String numeroNF;
