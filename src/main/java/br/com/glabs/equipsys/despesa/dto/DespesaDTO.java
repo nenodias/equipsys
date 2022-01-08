@@ -6,15 +6,18 @@ import br.com.glabs.equipsys.obra.dto.
         ObraDTO;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Getter
 @Setter
 @EqualsAndHashCode
-public class DespesaDTO {
+@NoArgsConstructor
+public class DespesaDTO implements Serializable {
 
     private Long id;
     private String descricao;

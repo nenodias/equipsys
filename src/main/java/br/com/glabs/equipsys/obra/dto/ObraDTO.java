@@ -2,6 +2,7 @@ package br.com.glabs.equipsys.obra.dto;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @EqualsAndHashCode
+@NoArgsConstructor
 public class ObraDTO implements Serializable {
 
     private Long id;
