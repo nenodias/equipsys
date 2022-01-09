@@ -8,4 +8,6 @@ import org.mapstruct.Mapper;
 public interface FornecedorMapper {
 
     FornecedorDTO toDTO(FornecedorDB fornecedorDB);
+
+    FornecedorDB toModel(FornecedorDTO fornecedorDTO);
 }

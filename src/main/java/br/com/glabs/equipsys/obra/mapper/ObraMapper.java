@@ -7,4 +7,6 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface ObraMapper {
     ObraDTO toDTO(ObraDB obraDB);
+
+    ObraDB toModel(ObraDTO equipamentoDTO);
 }

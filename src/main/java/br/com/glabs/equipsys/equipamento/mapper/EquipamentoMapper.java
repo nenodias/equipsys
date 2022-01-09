@@ -7,4 +7,6 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface EquipamentoMapper {
     EquipamentoDTO toDTO(EquipamentoDB equipamentoDB);
+
+    EquipamentoDB toModel(EquipamentoDTO equipamentoDTO);
 }
