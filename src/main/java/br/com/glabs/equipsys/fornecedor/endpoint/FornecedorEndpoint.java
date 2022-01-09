@@ -2,14 +2,18 @@ package br.com.glabs.equipsys.fornecedor.endpoint;
 
 import br.com.glabs.equipsys.fornecedor.dao.FornecedorDao;
 import br.com.glabs.equipsys.fornecedor.dto.FornecedorDTO;
+import br.com.glabs.equipsys.fornecedor.entidade.FornecedorDB;
 import br.com.glabs.equipsys.fornecedor.mapper.FornecedorMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-import java.util.function.BiFunction;
-import java.util.function.Predicate;
 
 @RestController
 @RequestMapping("/api/fornecedor")
@@ -28,20 +32,30 @@ public class FornecedorEndpoint {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/count")
-    public ResponseEntity<Long> countByFilter(@RequestParam(defaultValue = "") String nome, @RequestParam(required = false) String cnpj) {
+    @GetMapping
+    public ResponseEntity<Page<FornecedorDTO>> getAll(
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) String cnpj,
+            @PageableDefault(page = 0, size = 20)
+            @SortDefault.SortDefaults({
+                    @SortDefault(sort = "id", direction = Sort.Direction.ASC),
+                    @SortDefault(sort = "name", direction = Sort.Direction.ASC),
+                    @SortDefault(sort = "cnpj", direction = Sort.Direction.ASC)
+            }) Pageable pageable
+    ) {
         final boolean nomeIsPresent = Optional.ofNullable(nome).isPresent();
         final boolean cnpjIsPresent = Optional.ofNullable(cnpj).isPresent();
-        Long response = 0L;
+        Page<FornecedorDB> response = Page.empty();
         if (nomeIsPresent && cnpjIsPresent) {
-            response = dao.countByNomeAndCnpj(nome, cnpj);
+            response = dao.findAllByNomeContainsAndCnpjContains(nome, cnpj, pageable);
         } else if (nomeIsPresent) {
-            response = dao.countByNome(nome);
+            response = dao.findAllByNomeContains(nome, pageable);
         } else if (cnpjIsPresent) {
-            response = dao.countByCnpj(cnpj);
+            response = dao.findAllByCnpjContains(cnpj, pageable);
+        } else {
+            response = dao.findAll(pageable);
         }
-        return Optional.ofNullable(response)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(response.map(mapper::toDTO));
     }
+
 }

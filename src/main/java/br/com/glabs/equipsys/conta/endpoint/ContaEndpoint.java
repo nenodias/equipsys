@@ -2,8 +2,14 @@ package br.com.glabs.equipsys.conta.endpoint;
 
 import br.com.glabs.equipsys.conta.dao.ContaDao;
 import br.com.glabs.equipsys.conta.dto.ContaDTO;
+import br.com.glabs.equipsys.conta.entidade.ContaDB;
 import br.com.glabs.equipsys.conta.mapper.ContaMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,11 +32,23 @@ public class ContaEndpoint {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/count")
-    public ResponseEntity<Long> countByFilter(@RequestParam(defaultValue = "") String nome) {
-        return Optional.ofNullable(dao.countByNome(nome))
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping
+    public ResponseEntity<Page<ContaDTO>> getAll(
+            @RequestParam(required = false) String nome,
+            @PageableDefault(page = 0, size = 20)
+            @SortDefault.SortDefaults({
+                    @SortDefault(sort = "id", direction = Sort.Direction.ASC),
+                    @SortDefault(sort = "name", direction = Sort.Direction.ASC)
+            }) Pageable pageable
+    ) {
+        final boolean nomeIsPresent = Optional.ofNullable(nome).isPresent();
+        Page<ContaDB> response = Page.empty();
+        if (nomeIsPresent) {
+            response = dao.findAllByNomeContains(nome, pageable);
+        } else {
+            response = dao.findAll(pageable);
+        }
+        return ResponseEntity.ok(response.map(mapper::toDTO));
     }
 
 }

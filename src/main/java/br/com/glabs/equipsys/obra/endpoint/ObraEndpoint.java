@@ -2,8 +2,14 @@ package br.com.glabs.equipsys.obra.endpoint;
 
 import br.com.glabs.equipsys.obra.dao.ObraDao;
 import br.com.glabs.equipsys.obra.dto.ObraDTO;
+import br.com.glabs.equipsys.obra.entidade.ObraDB;
 import br.com.glabs.equipsys.obra.mapper.ObraMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,20 +23,32 @@ public class ObraEndpoint {
     private ObraDao dao;
 
     @Autowired
-    private ObraMapper mappper;
+    private ObraMapper mapper;
 
     @GetMapping("/{id}")
     public ResponseEntity<ObraDTO> get(@PathVariable Long id) {
-        return dao.findById(id).map(mappper::toDTO)
+        return dao.findById(id).map(mapper::toDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/count")
-    public ResponseEntity<Long> countByFilter(@RequestParam(defaultValue = "") String nome) {
-        return Optional.ofNullable(dao.countByNome(nome))
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping
+    public ResponseEntity<Page<ObraDTO>> getAll(
+            @RequestParam(required = false) String nome,
+            @PageableDefault(page = 0, size = 20)
+            @SortDefault.SortDefaults({
+                    @SortDefault(sort = "id", direction = Sort.Direction.ASC),
+                    @SortDefault(sort = "name", direction = Sort.Direction.ASC)
+            }) Pageable pageable
+    ) {
+        final boolean nomeIsPresent = Optional.ofNullable(nome).isPresent();
+        Page<ObraDB> response = Page.empty();
+        if (nomeIsPresent) {
+            response = dao.findAllByNomeContains(nome, pageable);
+        } else {
+            response = dao.findAll(pageable);
+        }
+        return ResponseEntity.ok(response.map(mapper::toDTO));
     }
 
 }

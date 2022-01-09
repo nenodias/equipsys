@@ -1,19 +1,18 @@
 package br.com.glabs.equipsys.fornecedor.dao;
 
 import br.com.glabs.equipsys.fornecedor.entidade.FornecedorDB;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 
 public interface FornecedorDao extends CrudRepository<FornecedorDB, Long> {
 
-    @Query("select count(e) from FornecedorDB e where e.nome like %:nome% ")
-    long countByNome(@Param("nome") String nome);
+    Page<FornecedorDB> findAllByNomeContainsAndCnpjContains(String nome, String cnpj, Pageable pageable);
 
-    @Query("select count(e) from FornecedorDB e where e.cnpj like %:cnpj% ")
-    long countByCnpj(@Param("cnpj") String cnpj);
+    Page<FornecedorDB> findAllByNomeContains(String nome, Pageable pageable);
 
-    @Query("select count(e) from FornecedorDB e where e.nome like %:nome% and e.cnpj like %:cnpj% ")
-    long countByNomeAndCnpj(@Param("nome") String nome, @Param("cnpj") String cnpj);
+    Page<FornecedorDB> findAllByCnpjContains(String cnpj, Pageable pageable);
+
+    Page<FornecedorDB> findAll(Pageable pageable);
 
 }
