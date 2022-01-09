@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class FornecedorDTO implements Serializable {
 
     private Long id;
-    private Long cnpj;
+    private String cnpj;
     private String nome;
 
 }

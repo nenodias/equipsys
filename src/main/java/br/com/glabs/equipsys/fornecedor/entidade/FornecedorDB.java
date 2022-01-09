@@ -19,7 +19,7 @@ public class FornecedorDB implements Serializable {
     private Long id;
 
     @Column
-    private Long cnpj;
+    private String cnpj;
 
     @Column
     private String nome;

@@ -29,7 +29,7 @@ public class FornecedorEndpoint {
     }
 
     @GetMapping("/count")
-    public ResponseEntity<Long> countByFilter(@RequestParam(defaultValue = "") String nome, @RequestParam(required = false) Long cnpj) {
+    public ResponseEntity<Long> countByFilter(@RequestParam(defaultValue = "") String nome, @RequestParam(required = false) String cnpj) {
         final boolean nomeIsPresent = Optional.ofNullable(nome).isPresent();
         final boolean cnpjIsPresent = Optional.ofNullable(cnpj).isPresent();
         Long response = 0L;
