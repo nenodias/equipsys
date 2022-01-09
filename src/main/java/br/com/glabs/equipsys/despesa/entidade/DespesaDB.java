@@ -13,6 +13,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -29,19 +30,19 @@ public class DespesaDB implements Serializable {
     private String descricao;
 
     @Column
-    private Timestamp dataEmissao;
+    private LocalDateTime dataEmissao;
 
     @Column
-    private Timestamp dataVencimento;
+    private LocalDateTime dataVencimento;
 
     @Column
-    private Timestamp dataPagamento;
+    private LocalDateTime dataPagamento;
 
     @Column
-    private Timestamp dataRealizacaoObraInicio;
+    private LocalDateTime dataRealizacaoObraInicio;
 
     @Column
-    private Timestamp dataRealizacaoObraTermino;
+    private LocalDateTime dataRealizacaoObraTermino;
 
     @Column
     private BigDecimal valor;
@@ -49,6 +50,9 @@ public class DespesaDB implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column
     private TipoDespesaEnum tipo;
+
+    @Column
+    private Integer parcela;
 
     @Enumerated(EnumType.STRING)
     @Column

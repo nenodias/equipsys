@@ -9,9 +9,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -21,13 +23,14 @@ public class DespesaDTO implements Serializable {
 
     private Long id;
     private String descricao;
-    private Timestamp dataEmissao;
-    private Timestamp dataVencimento;
-    private Timestamp dataPagamento;
-    private Timestamp dataRealizacaoObraInicio;
-    private Timestamp dataRealizacaoObraTermino;
+    private LocalDateTime dataEmissao;
+    private LocalDateTime dataVencimento;
+    private LocalDateTime dataPagamento;
+    private LocalDateTime dataRealizacaoObraInicio;
+    private LocalDateTime dataRealizacaoObraTermino;
     private BigDecimal valor;
     private String tipo;
+    private Integer parcela;
     private String situacao;
     private String informacoesAdicionais;
     private FornecedorDTO fornecedor;

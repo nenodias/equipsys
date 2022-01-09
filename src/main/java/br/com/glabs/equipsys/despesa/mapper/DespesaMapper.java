@@ -6,6 +6,8 @@ import br.com.glabs.equipsys.conta.entidade.ContaDB;
 import br.com.glabs.equipsys.conta.mapper.ContaMapper;
 import br.com.glabs.equipsys.despesa.dto.DespesaDTO;
 import br.com.glabs.equipsys.despesa.entidade.DespesaDB;
+import br.com.glabs.equipsys.despesa.entidade.enums.SituacaoPagamentoEnum;
+import br.com.glabs.equipsys.despesa.entidade.enums.TipoDespesaEnum;
 import br.com.glabs.equipsys.fornecedor.dao.FornecedorDao;
 import br.com.glabs.equipsys.fornecedor.dto.FornecedorDTO;
 import br.com.glabs.equipsys.fornecedor.entidade.FornecedorDB;
@@ -46,7 +48,9 @@ public abstract class DespesaMapper {
     @Mappings({
             @Mapping(source = "fornecedor", target = "fornecedor", qualifiedByName = "fornecedorToDTO"),
             @Mapping(source = "obra", target = "obra", qualifiedByName = "obraToDTO"),
-            @Mapping(source = "conta", target = "conta", qualifiedByName = "contaToDTO")
+            @Mapping(source = "conta", target = "conta", qualifiedByName = "contaToDTO"),
+            @Mapping(source = "tipo", target = "tipo", qualifiedByName = "tipoDespesaEnumToString"),
+            @Mapping(source = "situacao", target = "situacao", qualifiedByName = "situacaoPagamentoEnumToString"),
     })
     public abstract DespesaDTO toDTO(DespesaDB despesaDB);
 
@@ -68,7 +72,9 @@ public abstract class DespesaMapper {
     @Mappings({
             @Mapping(source = "fornecedor", target = "fornecedor", qualifiedByName = "fornecedorToModel"),
             @Mapping(source = "obra", target = "obra", qualifiedByName = "obraToModel"),
-            @Mapping(source = "conta", target = "conta", qualifiedByName = "contaToModel")
+            @Mapping(source = "conta", target = "conta", qualifiedByName = "contaToModel"),
+            @Mapping(source = "tipo", target = "tipo", qualifiedByName = "stringToTipoDespesaEnum"),
+            @Mapping(source = "situacao", target = "situacao", qualifiedByName = "stringToSituacaoPagamentoEnum"),
     })
     public abstract DespesaDB toModel(DespesaDTO despesaDTO);
 
@@ -97,6 +103,30 @@ public abstract class DespesaMapper {
                 .map(contaDao::findById)
                 .map(Optional::get)
                 .orElse(null);
+    }
+
+    @Named("situacaoPagamentoEnumToString")
+    protected String situacaoPagamentoEnumToString(SituacaoPagamentoEnum situacaoPagamentoEnum) {
+        return Optional.ofNullable(situacaoPagamentoEnum)
+                .map(SituacaoPagamentoEnum::name)
+                .orElse(null);
+    }
+
+    @Named("stringToSituacaoPagamentoEnum")
+    protected SituacaoPagamentoEnum stringToSituacaoPagamentoEnum(String value) {
+        return SituacaoPagamentoEnum.findByName(value);
+    }
+
+    @Named("tipoDespesaEnumToString")
+    protected String tipoDespesaEnumToString(TipoDespesaEnum tipoDespesaEnumToString) {
+        return Optional.ofNullable(tipoDespesaEnumToString)
+                .map(TipoDespesaEnum::name)
+                .orElse(null);
+    }
+
+    @Named("stringToTipoDespesaEnum")
+    protected TipoDespesaEnum stringToTipoDespesaEnum(String value) {
+        return TipoDespesaEnum.findByName(value);
     }
 
 }
