@@ -39,7 +39,7 @@ public class ObraEndpoint {
             @PageableDefault(page = 0, size = 20)
             @SortDefault.SortDefaults({
                     @SortDefault(sort = "id", direction = Sort.Direction.ASC),
-                    @SortDefault(sort = "name", direction = Sort.Direction.ASC)
+                    @SortDefault(sort = "nome", direction = Sort.Direction.ASC)
             }) Pageable pageable
     ) {
         final boolean nomeIsPresent = Optional.ofNullable(nome).isPresent();

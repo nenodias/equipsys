@@ -40,7 +40,7 @@ public class FornecedorEndpoint {
             @PageableDefault(page = 0, size = 20)
             @SortDefault.SortDefaults({
                     @SortDefault(sort = "id", direction = Sort.Direction.ASC),
-                    @SortDefault(sort = "name", direction = Sort.Direction.ASC),
+                    @SortDefault(sort = "nome", direction = Sort.Direction.ASC),
                     @SortDefault(sort = "cnpj", direction = Sort.Direction.ASC)
             }) Pageable pageable
     ) {
