@@ -1,6 +1,7 @@
 package br.com.glabs.equipsys.despesa.entidade;
 
 import br.com.glabs.equipsys.conta.entidade.ContaDB;
+import br.com.glabs.equipsys.despesa.entidade.enums.SituacaoDespesaEnum;
 import br.com.glabs.equipsys.despesa.entidade.enums.SituacaoPagamentoEnum;
 import br.com.glabs.equipsys.despesa.entidade.enums.TipoDespesaEnum;
 import br.com.glabs.equipsys.fornecedor.entidade.FornecedorDB;
@@ -14,6 +15,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -30,34 +32,20 @@ public class DespesaDB implements Serializable {
     private String descricao;
 
     @Column
-    private LocalDateTime dataEmissao;
-
-    @Column
-    private LocalDateTime dataVencimento;
-
-    @Column
-    private LocalDateTime dataPagamento;
-
-    @Column
     private LocalDateTime dataRealizacaoObraInicio;
 
     @Column
     private LocalDateTime dataRealizacaoObraTermino;
 
-    @Column
-    private BigDecimal valor;
-
     @Enumerated(EnumType.STRING)
     @Column
     private TipoDespesaEnum tipo;
 
-    @Column
-    private Integer parcela;
-
     @Enumerated(EnumType.STRING)
     @Column
-    private SituacaoPagamentoEnum situacao;
+    private SituacaoDespesaEnum situacao;
 
+    @Lob
     @Column
     private String informacoesAdicionais;
 
@@ -73,10 +61,13 @@ public class DespesaDB implements Serializable {
     @JoinColumn
     private ContaDB conta;
 
-    @Column
-    private String numeroNF;
+    @OneToMany(mappedBy = "despesa", fetch = FetchType.LAZY)
+    private List<ParcelaDB> parcelas;
 
     @Column
-    private String serieNF;
+    private BigDecimal valorTotal;
+
+    @Column
+    private BigDecimal valorRecebido;
 
 }
