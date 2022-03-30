@@ -13,7 +13,8 @@ import Calendar from 'primevue/calendar';
 import Card from 'primevue/card';
 import Carousel from 'primevue/carousel';
 import CascadeSelect from 'primevue/cascadeselect';
-// import Chart from 'primevue/chart';
+import ConfirmationService from 'primevue/confirmationservice';
+import Chart from 'primevue/chart';
 import Checkbox from 'primevue/checkbox';
 import Chip from 'primevue/chip';
 import Chips from 'primevue/chips';
@@ -85,6 +86,7 @@ import TreeTable from 'primevue/treetable';
 import TieredMenu from 'primevue/tieredmenu';
 import Timeline from 'primevue/timeline';
 import Toast from 'primevue/toast';
+import ToastService from 'primevue/toastservice';
 import ToggleButton from 'primevue/togglebutton';
 import Toolbar from 'primevue/toolbar';
 import Tooltip from 'primevue/tooltip';
@@ -108,7 +110,7 @@ export default function install (app) {
     app.component('Card', Card);
     app.component('Carousel', Carousel);
     app.component('CascadeSelect', CascadeSelect);
-    // app.component('Chart', Chart);
+    app.component('Chart', Chart);
     app.component('Checkbox', Checkbox);
     app.component('Chip', Chip);
     app.component('Chips', Chips);
@@ -185,5 +187,7 @@ export default function install (app) {
     app.directive('Tooltip', Tooltip);
     app.component('TriStateCheckBox', TriStateCheckBox);
     app.component('VirtualScroller', VirtualScroller);
+    app.use(ConfirmationService);
+    app.use(ToastService);
 }
 
