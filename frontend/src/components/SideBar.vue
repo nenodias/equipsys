@@ -13,6 +13,22 @@ export default {
           to: "/",
         },
         {
+          label: "Conta",
+          icon: "pi pi-id-card",
+          items:[
+            {
+              label: "Listar",
+              icon: "pi pi-list",
+              to: "/conta",
+            },
+            {
+              label: "Cadastrar",
+              icon: "pi pi-pencil",
+              to: "/conta/new",
+            }
+          ],
+        },
+        {
           label: "External",
           icon: "pi pi-check",
           url: "https://www.primefaces.org/primevue",

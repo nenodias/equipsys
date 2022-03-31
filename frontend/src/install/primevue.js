@@ -1,3 +1,4 @@
+import PrimeVue from 'primevue/config';
 import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
 //import Api from 'primevue/api'; //Constants
@@ -96,6 +97,9 @@ import VirtualScroller from 'primevue/virtualscroller';
 
 
 export default function install (app) {
+    app.use(PrimeVue);
+    app.use(ConfirmationService);
+    app.use(ToastService);
     app.component('Accordion', Accordion);
     app.component('AccordionTab', AccordionTab);
     app.component('AutoComplete', AutoComplete);
@@ -187,7 +191,5 @@ export default function install (app) {
     app.directive('Tooltip', Tooltip);
     app.component('TriStateCheckBox', TriStateCheckBox);
     app.component('VirtualScroller', VirtualScroller);
-    app.use(ConfirmationService);
-    app.use(ToastService);
 }
 
