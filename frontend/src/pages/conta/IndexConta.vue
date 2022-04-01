@@ -64,6 +64,7 @@
                 <InputText
                   v-model="filters['global'].value"
                   placeholder="Buscar"
+                  @keyup.enter="doFilter"
                 />
               </span>
               <Button
