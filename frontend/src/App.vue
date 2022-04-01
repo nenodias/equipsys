@@ -72,6 +72,7 @@ body {
 .layout-main-container{
   padding: 20px;
   grid-area: main;
+  text-align: initial;
 }
 .app-container {
   width: 100%;

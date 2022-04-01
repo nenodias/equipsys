@@ -1,9 +1,8 @@
 package br.com.glabs.equipsys.despesa.endpoint;
 
+import br.com.glabs.equipsys.NotFoundException;
 import br.com.glabs.equipsys.despesa.dao.ParcelaDao;
-import br.com.glabs.equipsys.despesa.dto.DespesaParcelaDTO;
 import br.com.glabs.equipsys.despesa.dto.ParcelaDTO;
-import br.com.glabs.equipsys.despesa.mapper.DespesaParcelaMapper;
 import br.com.glabs.equipsys.despesa.mapper.ParcelaMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +31,19 @@ public class ParcelaEndpoint {
     @PostMapping
     public ResponseEntity<ParcelaDTO> post(@RequestBody ParcelaDTO dto) {
         return Optional.ofNullable(dto).map(mapper::toModel)
+                .map(dao::save)
+                .map(mapper::toDTO)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ParcelaDTO> put(@PathVariable Long id, @RequestBody ParcelaDTO dto) {
+        Optional.ofNullable(dao.findById(id)).orElseThrow(NotFoundException::new);
+        return Optional.ofNullable(dto).map(i -> {
+                    i.setId(id);
+                    return i;
+                }).map(mapper::toModel)
                 .map(dao::save)
                 .map(mapper::toDTO)
                 .map(ResponseEntity::ok)

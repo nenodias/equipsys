@@ -2,6 +2,7 @@
 import { createWebHashHistory, createRouter } from "vue-router";
 import HelloWorld from  "./components/HelloWorld.vue";
 import IndexConta from  "./pages/conta/IndexConta.vue";
+import FormConta from  "./pages/conta/FormConta.vue";
 
 const routes = [
     { 
@@ -15,13 +16,13 @@ const routes = [
     },
     { 
         path: '/conta/new',
-        component: IndexConta,
+        component: FormConta,
         name: "ContaNew",
     },
     {
         path: "/conta/:id",
-        name: "ContaEditId",
-        component: IndexConta,
+        name: "ContaEdit",
+        component: FormConta,
       }
 ]
 

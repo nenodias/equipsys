@@ -97,7 +97,14 @@ import VirtualScroller from 'primevue/virtualscroller';
 
 
 export default function install (app) {
-    app.use(PrimeVue);
+    app.use(PrimeVue, {
+        zIndex: {
+            modal: 1100,
+            overlay: 1000,
+            menu: 1000,
+            tooltip: 1100
+        }
+    });
     app.use(ConfirmationService);
     app.use(ToastService);
     app.component('Accordion', Accordion);

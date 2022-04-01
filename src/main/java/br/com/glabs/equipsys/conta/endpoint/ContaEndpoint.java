@@ -1,5 +1,6 @@
 package br.com.glabs.equipsys.conta.endpoint;
 
+import br.com.glabs.equipsys.NotFoundException;
 import br.com.glabs.equipsys.conta.dao.ContaDao;
 import br.com.glabs.equipsys.conta.dto.ContaDTO;
 import br.com.glabs.equipsys.conta.entidade.ContaDB;
@@ -56,6 +57,19 @@ public class ContaEndpoint {
     @PostMapping
     public ResponseEntity<ContaDTO> post(@RequestBody ContaDTO dto) {
         return Optional.ofNullable(dto).map(mapper::toModel)
+                .map(dao::save)
+                .map(mapper::toDTO)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ContaDTO> put(@PathVariable Long id, @RequestBody ContaDTO dto) {
+        Optional.ofNullable(dao.findById(id)).orElseThrow(NotFoundException::new);
+        return Optional.ofNullable(dto).map(i -> {
+                    i.setId(id);
+                    return i;
+                }).map(mapper::toModel)
                 .map(dao::save)
                 .map(mapper::toDTO)
                 .map(ResponseEntity::ok)

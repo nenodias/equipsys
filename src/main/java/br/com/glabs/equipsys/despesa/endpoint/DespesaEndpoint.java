@@ -1,5 +1,6 @@
 package br.com.glabs.equipsys.despesa.endpoint;
 
+import br.com.glabs.equipsys.NotFoundException;
 import br.com.glabs.equipsys.despesa.dao.DespesaDao;
 import br.com.glabs.equipsys.despesa.dto.DespesaDTO;
 import br.com.glabs.equipsys.despesa.entidade.DespesaDB;
@@ -38,8 +39,8 @@ public class DespesaEndpoint {
             @RequestParam(required = false) String descricao,
             @PageableDefault(page = 0, size = 20)
             @SortDefault.SortDefaults({
-                @SortDefault(sort = "id", direction = Sort.Direction.ASC),
-                @SortDefault(sort = "descricao", direction = Sort.Direction.ASC)
+                    @SortDefault(sort = "id", direction = Sort.Direction.ASC),
+                    @SortDefault(sort = "descricao", direction = Sort.Direction.ASC)
             }) Pageable pageable
     ) {
         final boolean descricaoIsPresent = Optional.ofNullable(descricao).isPresent();
@@ -55,6 +56,19 @@ public class DespesaEndpoint {
     @PostMapping
     public ResponseEntity<DespesaDTO> post(@RequestBody DespesaDTO dto) {
         return Optional.ofNullable(dto).map(mapper::toModel)
+                .map(dao::save)
+                .map(mapper::toDTO)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<DespesaDTO> put(@PathVariable Long id, @RequestBody DespesaDTO dto) {
+        Optional.ofNullable(dao.findById(id)).orElseThrow(NotFoundException::new);
+        return Optional.ofNullable(dto).map(i -> {
+                    i.setId(id);
+                    return i;
+                }).map(mapper::toModel)
                 .map(dao::save)
                 .map(mapper::toDTO)
                 .map(ResponseEntity::ok)

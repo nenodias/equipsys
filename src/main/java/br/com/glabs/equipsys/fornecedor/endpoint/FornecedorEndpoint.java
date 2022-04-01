@@ -1,5 +1,6 @@
 package br.com.glabs.equipsys.fornecedor.endpoint;
 
+import br.com.glabs.equipsys.NotFoundException;
 import br.com.glabs.equipsys.fornecedor.dao.FornecedorDao;
 import br.com.glabs.equipsys.fornecedor.dto.FornecedorDTO;
 import br.com.glabs.equipsys.fornecedor.entidade.FornecedorDB;
@@ -62,6 +63,19 @@ public class FornecedorEndpoint {
     @PostMapping
     public ResponseEntity<FornecedorDTO> post(@RequestBody FornecedorDTO dto) {
         return Optional.ofNullable(dto).map(mapper::toModel)
+                .map(dao::save)
+                .map(mapper::toDTO)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<FornecedorDTO> put(@PathVariable Long id, @RequestBody FornecedorDTO dto) {
+        Optional.ofNullable(dao.findById(id)).orElseThrow(NotFoundException::new);
+        return Optional.ofNullable(dto).map(i -> {
+                    i.setId(id);
+                    return i;
+                }).map(mapper::toModel)
                 .map(dao::save)
                 .map(mapper::toDTO)
                 .map(ResponseEntity::ok)

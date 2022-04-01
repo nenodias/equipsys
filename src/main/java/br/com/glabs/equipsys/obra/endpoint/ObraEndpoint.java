@@ -1,5 +1,6 @@
 package br.com.glabs.equipsys.obra.endpoint;
 
+import br.com.glabs.equipsys.NotFoundException;
 import br.com.glabs.equipsys.obra.dao.ObraDao;
 import br.com.glabs.equipsys.obra.dto.ObraDTO;
 import br.com.glabs.equipsys.obra.entidade.ObraDB;
@@ -55,6 +56,19 @@ public class ObraEndpoint {
     @PostMapping
     public ResponseEntity<ObraDTO> post(@RequestBody ObraDTO dto) {
         return Optional.ofNullable(dto).map(mapper::toModel)
+                .map(dao::save)
+                .map(mapper::toDTO)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ObraDTO> put(@PathVariable Long id, @RequestBody ObraDTO dto) {
+        Optional.ofNullable(dao.findById(id)).orElseThrow(NotFoundException::new);
+        return Optional.ofNullable(dto).map(i -> {
+                    i.setId(id);
+                    return i;
+                }).map(mapper::toModel)
                 .map(dao::save)
                 .map(mapper::toDTO)
                 .map(ResponseEntity::ok)

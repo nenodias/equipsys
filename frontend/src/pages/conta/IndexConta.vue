@@ -28,7 +28,7 @@
             <Button
               icon="pi pi-pencil"
               class="p-button-rounded p-button-warning mr-2"
-              @click="edit(slotProps.data)"
+              @click="doEdit(slotProps.data)"
             />
             <Button
               icon="pi pi-trash"
@@ -49,7 +49,7 @@
         <template #header>
           <Toolbar>
             <template #start>
-              <Button label="Inserir" icon="pi pi-plus" class="mr-2" />
+              <Button label="Inserir" icon="pi pi-plus" class="mr-2" @click="doNew" />
             </template>
 
             <template #end>
@@ -115,8 +115,11 @@ export default {
     this.loadLazyData();
   },
   methods: {
-    edit(data) {
-      console.log(data);
+    doNew(){
+        this.$router.push({name:"ContaNew"});
+    },
+    doEdit(data) {
+      this.$router.push({name:"ContaEdit", params:{id: data.id}});
     },
     confirmDelete(data) {
       ConfirmationEventBus.emit("confirm", this.dataConfirmDialog);
@@ -136,6 +139,7 @@ export default {
                   content: `Registro ${data.id} removido com sucesso!`,
                   closeable: true,
                 });
+                this.loadLazyData();
               } else {
                 AppEventBus.emit("message", {
                   severity: "error",

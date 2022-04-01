@@ -1,5 +1,6 @@
 package br.com.glabs.equipsys.equipamento.endpoint;
 
+import br.com.glabs.equipsys.NotFoundException;
 import br.com.glabs.equipsys.equipamento.dao.EquipamentoDao;
 import br.com.glabs.equipsys.equipamento.dto.EquipamentoDTO;
 import br.com.glabs.equipsys.equipamento.entidade.EquipamentoDB;
@@ -55,6 +56,19 @@ public class EquipamentoEndpoint {
     @PostMapping
     public ResponseEntity<EquipamentoDTO> post(@RequestBody EquipamentoDTO dto) {
         return Optional.ofNullable(dto).map(mapper::toModel)
+                .map(dao::save)
+                .map(mapper::toDTO)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<EquipamentoDTO> put(@PathVariable Long id, @RequestBody EquipamentoDTO dto) {
+        Optional.ofNullable(dao.findById(id)).orElseThrow(NotFoundException::new);
+        return Optional.ofNullable(dto).map(i -> {
+                    i.setId(id);
+                    return i;
+                }).map(mapper::toModel)
                 .map(dao::save)
                 .map(mapper::toDTO)
                 .map(ResponseEntity::ok)
