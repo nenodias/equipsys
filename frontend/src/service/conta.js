@@ -24,6 +24,7 @@ export default {
             .then(res => res.data);
     },
     save(dados){
+        console.log(dados);
         return axios.post(`/api/conta`, dados).then(res => res.data);
     },
     update(dados){

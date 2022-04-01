@@ -50,7 +50,12 @@
         <template #header>
           <Toolbar>
             <template #start>
-              <Button label="Inserir" icon="pi pi-plus" class="mr-2" @click="doNew" />
+              <Button
+                label="Inserir"
+                icon="pi pi-plus"
+                class="mr-2"
+                @click="doNew"
+              />
             </template>
 
             <template #end>
@@ -75,135 +80,20 @@
 </template>
 
 <script>
-import { FilterMatchMode, FilterOperator } from "primevue/api";
-import ConfirmationEventBus from "primevue/confirmationeventbus";
-import AppEventBus from "@/AppEventBus";
+import DataTableMixin from "@/mixin/DataTableMixin";
+import IndexMixin from "@/mixin/IndexMixin";
 import conta from "@/service/conta";
 
-const semaforo = {
-  value: false,
-};
-
-const createLazyParams = () => {
-  return {
-    first: 0,
-    page: 0,
-    rows: null,
-    sortField: "id",
-    sortOrder: null,
-    filters: null,
-  };
-};
-
 export default {
+  mixins: [IndexMixin, DataTableMixin],
   data() {
     return {
-      loading: false,
-      firstFilter: true,
-      totalRecords: 0,
-      lazyParams: createLazyParams(),
-      filters: {
-        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+      pageRoutes:{
+        newPage:"ContaNew",
+        editPage:"ContaEdit"
       },
-      dados: [],
+      service: conta
     };
-  },
-  mounted() {
-    this.loading = true;
-    let lazy = createLazyParams();
-    lazy.rows = this.$refs.dt.rows;
-    lazy.filters = this.filters;
-    this.lazyParams = lazy;
-    this.loadLazyData();
-  },
-  methods: {
-    doNew(){
-        this.$router.push({name:"ContaNew"});
-    },
-    doEdit(data) {
-      this.$router.push({name:"ContaEdit", params:{id: data.id}});
-    },
-    confirmDelete(data) {
-      ConfirmationEventBus.emit("confirm", this.dataConfirmDialog);
-      this.$confirm.require({
-        message: `Deseja remover o registro ${data.id}?`,
-        header: "Atenção",
-        icon: "pi pi-exclamation-triangle",
-        acceptLabel: "Sim",
-        rejectLabel: "Não",
-        accept: () => {
-          conta
-            .deleteById(data.id)
-            .then((res) => {
-              if (res.status == 200) {
-                AppEventBus.emit("message", {
-                  severity: "success",
-                  content: `Registro ${data.id} removido com sucesso!`,
-                  closeable: true,
-                });
-                this.loadLazyData();
-              } else {
-                AppEventBus.emit("message", {
-                  severity: "error",
-                  content: `Erro ao remover o registro ${data.id}!`,
-                  closeable: true,
-                });
-              }
-            })
-            .catch((err) => {
-              AppEventBus.emit("message", {
-                severity: "error",
-                content: `Erro ao remover o registro ${data.id}!`,
-                closeable: true,
-              });
-              console.error(err);
-              console.error(err.response);
-            });
-        },
-        reject: () => {},
-      });
-    },
-    loadLazyData() {
-      semaforo.value = true;
-      this.loading = true;
-      this.$nextTick(() => {
-        conta.findAll(this.lazyParams).then((dados) => {
-          this.loading = false;
-          semaforo.value = false;
-          this.dados = dados.content;
-          this.totalRecords = dados.totalElements;
-        });
-      });
-    },
-    onPage(event) {
-      const lazy = Object.assign({}, this.lazyParams, event);
-      this.lazyParams = lazy;
-      console.log("onPage", event);
-      this.loadLazyData();
-    },
-    onSort(event) {
-      const lazy = Object.assign({}, this.lazyParams, event);
-      this.lazyParams = lazy;
-      console.log("onSort", event);
-      this.loadLazyData();
-    },
-    onFilter(event) {
-      console.log("onFilter", event);
-      this.lazyParams.filters = this.filters;
-    },
-    doFilter(event) {
-      console.log("doFilter", event);
-      this.lazyParams.filters = this.filters;
-      this.loadLazyData();
-    },
-    refresh() {
-      let lazy = createLazyParams();
-      lazy.rows = this.$refs.dt.rows;
-      lazy.filters = this.filters;
-      lazy.filters.global.value = null;
-      this.lazyParams = lazy;
-      this.loadLazyData();
-    },
-  },
+  }
 };
 </script>   
