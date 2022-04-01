@@ -7,8 +7,21 @@ export default {
     deleteById(id){
         return axios.delete(`/api/conta/${id}`);
     },
-    findAll(){
-        return axios.get(`/api/conta`).then(res => res.data);
+    findAll({page, rows, sortField, sortOrder, filters}){
+        if(sortField !== null){
+            if(sortOrder !== null){
+                sortOrder = sortOrder == 1 ? "ASC" : "DESC";
+            }
+            sortField = `&sort=${sortField}${sortOrder ? `,${sortOrder}` : ''}`;
+        }else {
+            sortField = "";
+        }
+        let nome = "";
+        if(filters.global.value){
+            nome = `&nome=${filters.global.value}`;
+        }
+        return axios.get(`/api/conta?page=${page}&size=${rows}${sortField}${nome}`)
+            .then(res => res.data);
     },
     save(dados){
         return axios.post(`/api/conta`, dados).then(res => res.data);

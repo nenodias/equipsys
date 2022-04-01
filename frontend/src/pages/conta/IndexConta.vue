@@ -8,6 +8,7 @@
         :loading="loading"
         dataKey="id"
         :value="dados"
+        :lazy="true"
         :paginator="true"
         :rows="10"
         v-model:filters="filters"
@@ -83,19 +84,24 @@ const semaforo = {
   value: false,
 };
 
+const createLazyParams = () => {
+  return {
+    first: 0,
+    page: 0,
+    rows: null,
+    sortField: "id",
+    sortOrder: null,
+    filters: null,
+  };
+};
+
 export default {
   data() {
     return {
       loading: false,
       firstFilter: true,
       totalRecords: 0,
-      lazyParams: {
-        first: 0,
-        rows: null,
-        sortField: null,
-        sortOrder: null,
-        filters: null,
-      },
+      lazyParams: createLazyParams(),
       filters: {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
       },
@@ -104,14 +110,10 @@ export default {
   },
   mounted() {
     this.loading = true;
-
-    this.lazyParams = {
-      first: 0,
-      rows: this.$refs.dt.rows,
-      sortField: null,
-      sortOrder: null,
-      filters: this.filters,
-    };
+    let lazy = createLazyParams();
+    lazy.rows = this.$refs.dt.rows;
+    lazy.filters = this.filters;
+    this.lazyParams = lazy;
     this.loadLazyData();
   },
   methods: {
@@ -165,7 +167,7 @@ export default {
       semaforo.value = true;
       this.loading = true;
       this.$nextTick(() => {
-        conta.findAll().then((dados) => {
+        conta.findAll(this.lazyParams).then((dados) => {
           this.loading = false;
           semaforo.value = false;
           this.dados = dados.content;
@@ -174,12 +176,14 @@ export default {
       });
     },
     onPage(event) {
-      this.lazyParams = event;
+      const lazy = Object.assign({}, this.lazyParams, event);
+      this.lazyParams = lazy;
       console.log("onPage", event);
       this.loadLazyData();
     },
     onSort(event) {
-      this.lazyParams = event;
+      const lazy = Object.assign({}, this.lazyParams, event);
+      this.lazyParams = lazy;
       console.log("onSort", event);
       this.loadLazyData();
     },
@@ -193,6 +197,11 @@ export default {
       this.loadLazyData();
     },
     refresh() {
+      let lazy = createLazyParams();
+      lazy.rows = this.$refs.dt.rows;
+      lazy.filters = this.filters;
+      lazy.filters.global.value = null;
+      this.lazyParams = lazy;
       this.loadLazyData();
     },
   },
