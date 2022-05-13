@@ -7,7 +7,6 @@ import br.com.glabs.equipsys.conta.mapper.ContaMapper;
 import br.com.glabs.equipsys.despesa.dao.ParcelaDao;
 import br.com.glabs.equipsys.despesa.dto.DespesaDTO;
 import br.com.glabs.equipsys.despesa.dto.DespesaParcelaDTO;
-import br.com.glabs.equipsys.despesa.dto.ParcelaDTO;
 import br.com.glabs.equipsys.despesa.entidade.DespesaDB;
 import br.com.glabs.equipsys.despesa.entidade.ParcelaDB;
 import br.com.glabs.equipsys.despesa.entidade.enums.SituacaoDespesaEnum;
@@ -23,6 +22,7 @@ import br.com.glabs.equipsys.obra.mapper.ObraMapper;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -61,6 +61,8 @@ public abstract class DespesaMapper {
             @Mapping(source = "tipo", target = "tipo", qualifiedByName = "tipoDespesaEnumToString"),
             @Mapping(source = "situacao", target = "situacao", qualifiedByName = "situacaoPagamentoEnumToString"),
             @Mapping(source = "parcelas", target = "parcelas", qualifiedByName = "parcelasToDTO"),
+            @Mapping(source = "valorRecebido", target = "valorRecebido"),
+            @Mapping(source = "valorTotal", target = "valorTotal"),
     })
     public abstract DespesaDTO toDTO(DespesaDB despesaDB);
 
@@ -86,6 +88,8 @@ public abstract class DespesaMapper {
             @Mapping(source = "tipo", target = "tipo", qualifiedByName = "stringToTipoDespesaEnum"),
             @Mapping(source = "situacao", target = "situacao", qualifiedByName = "stringToSituacaoPagamentoEnum"),
             @Mapping(source = "parcelas", target = "parcelas", qualifiedByName = "parcelasToModel"),
+            @Mapping(source = "valorRecebido", target = "valorRecebido"),
+            @Mapping(source = "valorTotal", target = "valorTotal")
     })
     public abstract DespesaDB toModel(DespesaDTO despesaDTO);
 
@@ -164,5 +168,15 @@ public abstract class DespesaMapper {
         Optional.ofNullable(despesaDB)
                 .map(DespesaDB::getParcelas).orElseGet(ArrayList::new)
                 .forEach(consumer);
+    }
+
+    @AfterMapping
+    protected void afterMapping(@MappingTarget DespesaDTO despesaDTO) {
+        if(Objects.isNull(despesaDTO.getValorRecebido())){
+            despesaDTO.setValorRecebido(BigDecimal.ZERO);
+        }
+        if(Objects.isNull(despesaDTO.getValorTotal())){
+            despesaDTO.setValorTotal(BigDecimal.ZERO);
+        }
     }
 }
