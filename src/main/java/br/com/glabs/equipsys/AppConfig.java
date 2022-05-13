@@ -22,7 +22,7 @@ public class AppConfig implements WebMvcConfigurer {
         registry.addMapping("/*")
                 .allowedOrigins(urls)
                 .allowedMethods(methods)
-                .allowedHeaders("Content-Type", "X-Requested-With", "accept", "Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers")
+                .allowedHeaders("Content-Type", "X-Requested-With", "accept", "Origin", "Access-Control-Allow-Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers")
                 .exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials")
                 .allowCredentials(true)
                 .maxAge(3600);
