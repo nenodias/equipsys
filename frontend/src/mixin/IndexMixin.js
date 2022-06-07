@@ -2,6 +2,12 @@ import ConfirmationEventBus from "primevue/confirmationeventbus";
 import AppEventBus from "@/AppEventBus";
 
 const mixin = {
+    props:{
+        dialog:{
+            type: Boolean,
+            default: false
+          }
+    },
     methods: {
         doNew() {
             this.$router.push({ name: this.pageRoutes.newPage });
@@ -47,6 +53,9 @@ const mixin = {
                 },
                 reject: () => { },
             });
+        },
+        selectRow(dados){
+            this.$emit('input', dados);
         }
     }
 };

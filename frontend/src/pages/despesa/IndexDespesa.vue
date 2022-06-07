@@ -39,16 +39,25 @@
         <Column field="valorTotal" header="A Receber" :sortable="true"></Column>
         <Column :exportable="false" style="min-width: 8rem">
           <template #body="slotProps">
-            <Button
-              icon="pi pi-pencil"
-              class="p-button-rounded p-button-warning mr-2"
-              @click="doEdit(slotProps.data)"
-            />
-            <Button
-              icon="pi pi-trash"
-              class="p-button-rounded p-button-danger"
-              @click="confirmDelete(slotProps.data)"
-            />
+            <div v-if="!dialog">
+              <Button
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-warning mr-2"
+                @click="doEdit(slotProps.data)"
+              />
+              <Button
+                icon="pi pi-trash"
+                class="p-button-rounded p-button-danger"
+                @click="confirmDelete(slotProps.data)"
+              />
+            </div>
+            <div v-if="dialog">
+              <Button
+                icon="pi pi-check"
+                class="p-button-rounded p-button-info"
+                @click="selectRow(slotProps.data)"
+              />
+            </div>
           </template>
         </Column>
         <template #paginatorstart>
@@ -63,12 +72,14 @@
         <template #header>
           <Toolbar>
             <template #start>
-              <Button
-                label="Inserir"
-                icon="pi pi-plus"
-                class="mr-2"
-                @click="doNew"
-              />
+              <div v-if="!dialog">
+                <Button
+                  label="Inserir"
+                  icon="pi pi-plus"
+                  class="mr-2"
+                  @click="doNew"
+                />
+              </div>
             </template>
 
             <template #end>
