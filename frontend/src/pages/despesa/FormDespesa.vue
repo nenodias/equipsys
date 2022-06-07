@@ -24,10 +24,19 @@
         </div>
         <div class="field">
           <label for="dataRealizacaoObraInicio">Data Inicio:</label>
-          <InputText
+          <Calendar
             id="dataRealizacaoObraInicio"
-            type="text"
+            showTime 
             v-model="form.dataRealizacaoObraInicio"
+            class="inputfield w-full"
+          />
+        </div>
+        <div class="field">
+          <label for="dataRealizacaoObraTermino">Data Término:</label>
+          <Calendar
+            id="dataRealizacaoObraTermino"
+            showTime 
+            v-model="form.dataRealizacaoObraTermino"
             class="inputfield w-full"
           />
         </div>
