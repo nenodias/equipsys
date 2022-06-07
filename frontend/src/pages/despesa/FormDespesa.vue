@@ -71,6 +71,16 @@
           />
         </div>
         <div class="field">
+          <label for="fornecedor">Fornecedor:</label>
+          <Search-Component
+            id="fornecedor"
+            v-model:value="form.fornecedor"
+            class="inputfield w-full"
+            titleHeader="Fornecedores"
+            :currentComponent="IndexConta"
+          />
+        </div>
+        <div class="field">
           <label for="valorTotal">Valor Total:</label>
           <InputNumber
             id="valorTotal"
@@ -117,8 +127,15 @@
 <script>
 import despesa from "@/service/despesa";
 import FormMixin from "@/mixin/FormMixin";
+import SearchComponent from "@/components/SearchComponent";
+import IndexConta from "@/pages/conta/IndexConta";
+
 export default {
   mixins: [FormMixin],
+  components:{
+    SearchComponent,
+    IndexConta
+  },
   data() {
     return {
       pageRoutes: {
@@ -134,7 +151,23 @@ export default {
         {label:"Pago",value:"PAGO"},
         {label:"Parcialmente Pago",value:"PARCIALMENTE_PAGO"},
         {label:"Não Pago",value:"NAO_PAGO"},
-      ]
+      ],
+      form: {
+          id: null,
+          descricao: "",
+          dataRealizacaoObraInicio: null,
+          dataRealizacaoObraTermino: null,
+          tipo: null,
+          situacao: null,
+          informacoesAdicionais: null,
+          fornecedor: null,
+          obra: null,
+          conta: null,
+          parcelas: [],
+          valorTotal:0,
+          valorRecebido: 0,
+      },
+      IndexConta:IndexConta,
     };
   },
   methods: {

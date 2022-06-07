@@ -80,6 +80,14 @@
                   @click="doNew"
                 />
               </div>
+              <div v-if="dialog">
+                <Button
+                  label="Limpar"
+                  icon="pi pi-clear"
+                  class="mr-2"
+                  @click="this.$emit('clear')"
+                />
+              </div>
             </template>
 
             <template #end>
