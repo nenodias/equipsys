@@ -11,6 +11,7 @@
         <div class="p-inputgroup">
             <InputText :placeholder="placeholder" :value="actualValue" disabled />
             <InputText :value="actualLabel" disabled />
+            <Button @click="clear" icon="pi pi-times" :disabled="disabled" class="p-button"/>
             <Button @click="onClick" icon="pi pi-search" :disabled="disabled" class="p-button-info"/>
         </div>
     </div>

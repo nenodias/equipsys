@@ -70,7 +70,7 @@
               <div v-if="dialog">
                 <Button
                   label="Limpar"
-                  icon="pi pi-clear"
+                  icon="pi pi-times"
                   class="mr-2"
                   @click="this.$emit('clear')"
                 />

@@ -77,6 +77,26 @@
             v-model:value="form.fornecedor"
             class="inputfield w-full"
             titleHeader="Fornecedores"
+            :currentComponent="IndexFornecedor"
+          />
+        </div>
+        <div class="field">
+          <label for="obra">Obra:</label>
+          <Search-Component
+            id="obra"
+            v-model:value="form.obra"
+            class="inputfield w-full"
+            titleHeader="Obras"
+            :currentComponent="IndexObra"
+          />
+        </div>
+        <div class="field">
+          <label for="conta">Conta:</label>
+          <Search-Component
+            id="conta"
+            v-model:value="form.conta"
+            class="inputfield w-full"
+            titleHeader="Contas"
             :currentComponent="IndexConta"
           />
         </div>
@@ -129,12 +149,16 @@ import despesa from "@/service/despesa";
 import FormMixin from "@/mixin/FormMixin";
 import SearchComponent from "@/components/SearchComponent";
 import IndexConta from "@/pages/conta/IndexConta";
+import IndexObra from "@/pages/obra/IndexObra";
+import IndexFornecedor from "@/pages/fornecedor/IndexFornecedor";
 
 export default {
   mixins: [FormMixin],
   components:{
     SearchComponent,
-    IndexConta
+    IndexConta,
+    IndexObra,
+    IndexFornecedor
   },
   data() {
     return {
@@ -168,6 +192,8 @@ export default {
           valorRecebido: 0,
       },
       IndexConta:IndexConta,
+      IndexObra:IndexObra,
+      IndexFornecedor:IndexFornecedor
     };
   },
   methods: {
