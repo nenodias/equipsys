@@ -65,11 +65,18 @@ export default {
             }
         }
     },
+    updated(){
+        if(this.value && !this.init){
+            this.onInput(this.value)
+            this.init = true;
+        }
+    },
     data(){
         return {
             actualValue: this.fnGetValue(this.$props.value),
             actualLabel: this.fnGetLabel(this.$props.label),
-            display: false
+            display: false,
+            init: false
         }
     },
     methods:{

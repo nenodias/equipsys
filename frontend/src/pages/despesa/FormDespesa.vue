@@ -199,7 +199,7 @@ export default {
   methods: {
     validate() {
       return new Promise((resolve, reject) => {
-        if (this.form.nome.length > 0) {
+        if (this.form.descricao.length > 0) {
           resolve();
         } else {
           reject();
