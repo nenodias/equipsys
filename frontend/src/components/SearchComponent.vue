@@ -9,10 +9,10 @@
 
         </Dialog>
         <div class="p-inputgroup">
-            <InputText :placeholder="placeholder" :value="actualValue" disabled />
-            <InputText :value="actualLabel" disabled />
-            <Button @click="clear" icon="pi pi-times" :disabled="disabled" class="p-button"/>
-            <Button @click="onClick" icon="pi pi-search" :disabled="disabled" class="p-button-info"/>
+            <InputText :id="id+'-value'" :placeholder="placeholder" :value="actualValue" disabled />
+            <InputText :id="id+'-label'" :value="actualLabel" disabled />
+            <Button :id="id+'-btn-clear'" @click="clear" icon="pi pi-times" :disabled="disabled" class="p-button"/>
+            <Button :id="id+'-btn-search'" @click="onClick" icon="pi pi-search" :disabled="disabled" class="p-button-info"/>
         </div>
     </div>
 </template>
@@ -24,6 +24,9 @@ export default {
     props:{
         value:{
             type: [String, Number, Object]
+        },
+        id:{
+            type: String
         },
         titleHeader:{
             type: String
