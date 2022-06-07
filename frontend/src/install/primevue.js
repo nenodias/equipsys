@@ -31,6 +31,7 @@ import Divider from 'primevue/divider';
 import Dock from 'primevue/dock';
 import Dropdown from 'primevue/dropdown';
 import DeferredContent from 'primevue/deferredcontent';
+import Editor from 'primevue/editor';
 import Fieldset from 'primevue/fieldset';
 import FileUpload from 'primevue/fileupload';
 import Galleria from 'primevue/galleria';
@@ -137,6 +138,7 @@ export default function install (app) {
     app.component('Dock', Dock);
     app.component('Dropdown', Dropdown);
     app.component('DeferredContent', DeferredContent);
+    app.component('Editor', Editor);
     app.component('Fieldset', Fieldset);
     app.component('FileUpload', FileUpload);
     app.component('Galleria', Galleria);

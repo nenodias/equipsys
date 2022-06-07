@@ -14,12 +14,73 @@
           />
         </div>
         <div class="field">
-          <label for="nome">Nome:</label>
+          <label for="descricao">Descricao:</label>
           <InputText
-            id="nome"
+            id="descricao"
             type="text"
-            v-model="form.nome"
+            v-model="form.descricao"
             class="inputfield w-full"
+          />
+        </div>
+        <div class="field">
+          <label for="dataRealizacaoObraInicio">Data Inicio:</label>
+          <InputText
+            id="dataRealizacaoObraInicio"
+            type="text"
+            v-model="form.dataRealizacaoObraInicio"
+            class="inputfield w-full"
+          />
+        </div>
+        <div class="field">
+          <label for="tipo">Tipo:</label>
+          <Dropdown
+            id="tipo"
+            v-model="form.tipo"
+            class="inputfield w-full"
+            :options="Tipos"
+            optionLabel="label"
+            optionValue="value"
+          />
+        </div>
+        <div class="field">
+          <label for="situacao">Situação:</label>
+          <Dropdown
+            id="situacao"
+            v-model="form.situacao"
+            class="inputfield w-full"
+            :options="Situacoes"
+            optionLabel="label"
+            optionValue="value"
+          />
+        </div>
+        <div class="field">
+          <label for="informacoesAdicionais">Informações adicionais:</label>
+          <Editor
+            id="informacoesAdicionais"
+            v-model="form.informacoesAdicionais"
+            class="inputfield w-full"
+          />
+        </div>
+        <div class="field">
+          <label for="valorTotal">Valor Total:</label>
+          <InputNumber
+            id="valorTotal"
+            v-model="form.valorTotal"
+            class="inputfield w-full"
+            :minFractionDigits="2" 
+            :maxFractionDigits="2"
+            mode="decimal" locale="pt-BR" 
+          />
+        </div>
+        <div class="field">
+          <label for="valorRecebido">Valor Recebido:</label>
+          <InputNumber
+            id="valorRecebido"
+            v-model="form.valorRecebido"
+            class="inputfield w-full"
+            :minFractionDigits="2" 
+            :maxFractionDigits="2"
+            mode="decimal" locale="pt-BR" 
           />
         </div>
         <Toolbar>
@@ -56,6 +117,15 @@ export default {
         indexPage: "DespesaIndex",
       },
       service: despesa,
+      Tipos:[
+        {label:"Parcela",value:"PARCELA"},
+        {label:"Despesa Fixa",value:"DESPESA_FIXA"}
+      ],
+      Situacoes:[
+        {label:"Pago",value:"PAGO"},
+        {label:"Parcialmente Pago",value:"PARCIALMENTE_PAGO"},
+        {label:"Não Pago",value:"NAO_PAGO"},
+      ]
     };
   },
   methods: {
