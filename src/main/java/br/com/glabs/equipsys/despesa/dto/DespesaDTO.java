@@ -2,8 +2,7 @@ package br.com.glabs.equipsys.despesa.dto;
 
 import br.com.glabs.equipsys.conta.dto.ContaDTO;
 import br.com.glabs.equipsys.fornecedor.dto.FornecedorDTO;
-import br.com.glabs.equipsys.obra.dto.
-        ObraDTO;
+import br.com.glabs.equipsys.obra.dto.ObraDTO;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

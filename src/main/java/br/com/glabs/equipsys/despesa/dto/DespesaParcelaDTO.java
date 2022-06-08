@@ -1,6 +1,5 @@
 package br.com.glabs.equipsys.despesa.dto;
 
-import br.com.glabs.equipsys.despesa.entidade.enums.SituacaoPagamentoEnum;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +22,7 @@ public class DespesaParcelaDTO implements Serializable {
     private LocalDateTime dataPagamento;
     private BigDecimal valor;
     private Integer parcela;
-    private SituacaoPagamentoEnum situacao;
+    private String situacao;
     private String numeroNF;
     private String serieNF;
 

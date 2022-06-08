@@ -26,7 +26,13 @@
           <label for="dataRealizacaoObraInicio">Data Inicio:</label>
           <Calendar
             id="dataRealizacaoObraInicio"
-            showTime 
+            showTime
+            showSeconds
+            showButtonBar
+            monthNavigator
+            yearNavigator
+            hourFormat="24"
+            dateFormat="yy-mm-dd"
             v-model="form.dataRealizacaoObraInicio"
             class="inputfield w-full"
           />
@@ -36,6 +42,12 @@
           <Calendar
             id="dataRealizacaoObraTermino"
             showTime 
+            showSeconds
+            showButtonBar
+            monthNavigator
+            yearNavigator
+            hourFormat="24"
+            dateFormat="yy-mm-dd"
             v-model="form.dataRealizacaoObraTermino"
             class="inputfield w-full"
           />
